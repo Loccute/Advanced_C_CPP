@@ -33,7 +33,7 @@ int main() {
 
 
 ### 1.2 Các loại pointer:
-#### a.Void pointer: 
+#### a. Void pointer: 
 Void pointer thường dùng để trỏ để tới bất kỳ địa chỉ nào mà không cần biết tới kiểu dữ liệu của giá trị tại địa chỉ đó.
 ```
 void *ptr_void;
