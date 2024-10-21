@@ -228,4 +228,5 @@ Output:
 var1 = 50
 var2 = 50
 var3 = 50
+
 Giải thích: đầu tiên ta gán data.var1 = 5 thì vùng địa chỉ chung của 3 biến sẽ lưu giá trị 5. Sau đó ta gán data.var2 = 6, ghi đè lên giá trị 5. Sau đó ta gán data.var3 = 50, ghi đè lên giá trị 6. Do đó var1, var2, var3 có chung giá trị là 50.
