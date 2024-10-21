@@ -222,6 +222,7 @@ int main(){
     printf("var2 = %d\n", data.var2);
     printf("var3 = %d\n", data.var3);
 }
+```
 
 Output:
 var1 = 50
