@@ -126,3 +126,9 @@ Lưu ý rằng sử dụng Memory-mapped segment đôi khi yêu cầu quyền h�
 		int *A = (int *)malloc(18446744073709551615);
 		```
 
+## 3. So sánh giữa malloc, calloc và realloc:
+| Malloc | Calloc | Realloc |
+| :--- | :--- | :--- |
+| A | B | C |
+| E | F | G |
+| I | K | L |
