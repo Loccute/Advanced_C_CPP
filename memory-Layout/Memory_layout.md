@@ -127,8 +127,11 @@ Lưu ý rằng sử dụng Memory-mapped segment đôi khi yêu cầu quyền h�
 		```
 
 ## 3. So sánh giữa malloc, calloc và realloc:
-| Malloc | Calloc | Realloc |
-| :--- | :--- | :--- |
-| A | B | C |
-| E | F | G |
-| I | K | L |
+| | Malloc | Calloc | Realloc |
+| :--- | :--- | :--- | :--- |
+|**Cú pháp**| void* malloc (size_t size); | void* calloc (size_t num, size_t size); | void* realloc(ptr, new_size) |
+|**Mục đích**| Cấp phát 1 vùng nhớ có kích thước là **size** | Cấp phát 1 vùng nhớ chứa **num** phần tử, mỗi phần tử có kích thước là **size**  | Cấp phát lại vùng nhớ cho con trỏ **ptr** với kích thước **new_size** mới  |
+|**Số tham số**| 1 | 2 | 2 |
+|**Giá tri trả về**| Con trỏ trỏ tới vùng nhớ được cấp phát nếu thành công, trả về con trỏ NULL nếu không thành công | Con trỏ trỏ tới vùng nhớ được cấp phát nếu thành công, trả về con trỏ NULL nếu không thành công | Con trỏ trỏ tới vùng nhớ được cấp phát nếu thành công, trả về con trỏ NULL nếu không thành công |
+|**Giá trị khởi tạo**| giá trị rác | được gán bằng 0 | Không thay đổi giá trị các phần tử sẵn có |
+|**Tác dụng**| Sử dụng khi cần 1 vùng nhớ linh hoạt | Khi cần tạo 1 mảng với toàn phần tử bằng 0 | Dùng để thay đổi kích thước bộ nhớ đang tồn tại |
