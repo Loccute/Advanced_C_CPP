@@ -7,30 +7,29 @@ Các thao tác cơ bản trên stack bao gồm:
 - “ pop” để xóa một phần tử ở đỉnh stack.
 - “ top” để lấy giá trị của phần tử ở đỉnh stack.
 
+Đầu tiên ta tạo 1 stack dưới dạng 1 struct như sau:
 ```
-#include <stdio.h>
-#include <stdlib.h>
-
-typedef struct Stack {
+typedef struct{
     int* items;
     int size;
     int top;
 } Stack;
+```
+Trong đó, con trỏ "items" dùng để lưu các phần tử của stack (kiểu int). Biến "size" dùng để lưu kích thước của stack và biến "top" dùng để lưu vị trí ở đỉnh của stack.
 
+Để thao tác với stack, trước tiên ta cần khởi tạo stack bằng hàm "initialize", truyền vào địa chỉ của 1 stack đã được khai báo trước đó cùng với kích thước khởi tạo.
+Ta cấp phát động bộ nhớ cho con trỏ items với kích thước bằng với kích thước khởi tạo "size". Ta khởi tạo top là -1 vì ban đầu stack chưa có phần tử.
+
+```
 void initialize( Stack *stack, int size) {
     stack->items = (int*) malloc(sizeof(int) * size);
     stack->size = size;
     stack->top = -1;
 }
+```
+Để push 1 phần tử vào stack, đầu tiên ta cần kiểm tra stack có đầy hay không bằng hàm "is_full", nếu stack đầy thì ta in ra màn hình "Stack overflow" và kết thúc hàm. Nếu stack vẫn còn chỗ trống, ta tăng vị trí đỉnh lên 1 đơn vị rồi thêm giá trị vào đỉnh của stack.
 
-int is_empty( Stack stack) {
-    return stack.top == -1;
-}
-
-int is_full( Stack stack) {
-    return stack.top == stack.size - 1;
-}
-
+```
 void push( Stack *stack, int value) {
     if (!is_full(*stack)) {
         stack->items[++stack->top] = value;
@@ -38,7 +37,17 @@ void push( Stack *stack, int value) {
         printf("Stack overflow\n");
     }
 }
+```
+Để kiểm tra xem stack có đầy hay không, ta dùng hàm is_full(stack). Hàm này kiểm tra xem "top" của "stack" có bằng size không.
+```
+int is_full( Stack stack) {
+    return stack.top == stack.size - 1;
+}
+```
 
+Để xóa 1 phần tử ở đỉnh stack, ta dùng hàm "pop". Đầu tiên, ta kiểm tra xem stack có rỗng hay không bằng hàm "is_empty", nếu stack rỗng, in ra "Stack underflow" rồi trả về -1 đại diện cho lỗi chức năng. Ngược lại, ta trả về giá trị ở đỉnh stack và giảm stack xuống 1 đơn vị.
+
+```
 int pop( Stack *stack) {
     if (!is_empty(*stack)) {
         return stack->items[stack->top--];
@@ -47,7 +56,18 @@ int pop( Stack *stack) {
         return -1;
     }
 }
+```
 
+Hàm is_empty(stack) dùng để kiểm tra xem 1 stack có rỗng không, nó trả về kết quả so sánh top với -1.
+```
+int is_empty( Stack stack) {
+    return stack.top == -1;
+}
+```
+
+Để lấy giá trị ở đỉnh của stack, ta dùng hàm "top". Đầu tiên ta kiểm tra xem thử stack có rỗng hay không bằng hàm "is_empty", nếu có, ta in ra "Stack is empty" rồi trả về -1 thể hiện truy xuất thất bại. Ngược lại, ta trả về giá trị ở đỉnh stack.
+
+```
 int top( Stack stack) {
     if (!is_empty(stack)) {
         return stack.items[stack.top];
@@ -55,28 +75,6 @@ int top( Stack stack) {
         printf("Stack is empty\n");
         return -1;
     }
-}
-
-int main() {
-    Stack stack1;
-    initialize(&stack1, 5);
-
-
-    push(&stack1, 10);
-    push(&stack1, 20);
-    push(&stack1, 30);
-    push(&stack1, 40);
-    push(&stack1, 50);
-    push(&stack1, 60);
-
-    printf("Top element: %d\n", top(stack1));
-
-    printf("Pop element: %d\n", pop(&stack1));
-    printf("Pop element: %d\n", pop(&stack1));
-
-    printf("Top element: %d\n", top(stack1));
-
-    return 0;
 }
 ```
 
@@ -88,17 +86,22 @@ Các thao tác cơ bản trên hàng đợi bao gồm:
 - “dequeue” (lấy phần tử từ đầu hàng đợi). 
 - “front” để lấy giá trị của phần tử đứng đầu hàng đợi.
 
+Đầu tiên ta cũng tạo 1 struct Queue như sau:
+
 ```
-#include <stdio.h>
-#include <stdlib.h>
-
-
-typedef struct Queue {
+typedef struct{
     int* items;
     int size;
     int front, rear;
 } Queue;
+```
 
+Con trỏ "items" dùng để lưu các phần tử trong stack. "size" dùng để lưu số lượng phần tử. Hai biến front và rear lần lượt lưu vị trí đầu và cuối của queue.
+
+
+Để khởi tạo 1 hàng đợi, ta dùng hàm iniialize, truyền vào địa chỉ của 1 queue đã được khai báo trước đó cùng với kích thước khởi tạo.
+Ta cấp phát động bộ nhớ cho con trỏ items với kích thước bằng với kích thước khởi tạo "size". Ta khởi tạo front và rear là -1 vì ban đầu stack chưa có phần tử.
+```
 void initialize(Queue *queue, int size) 
 {
     queue->items = (int*) malloc(sizeof(int)* size);
@@ -107,6 +110,9 @@ void initialize(Queue *queue, int size)
     queue->size = size;
 }
 
+Ta dùng hàm "dequeue" để thêm giá trị mới vào cuối hàng đợi. Đầu tiên ta cần kiểm tra queue có đầy hay không bằng hàm "is_full", nếu queue đầy thì ta in ra màn hình "Queue overflow" và kết thúc hàm. Nếu queue vẫn còn chỗ trống, ta tiếp tục kiểm tra xem queue có rỗng không bằng hàm "is_empty", nếu rỗng, ta gắn cả front và rear của queue lên 0. Nếu không, ta tăng vị trí rear lên 1 đơn vị và lấy dư với size để tránh nó vượt quá kích thước của queue. Cuối cùng thêm giá trị vào vị trí rear chỉ tới.
+
+```
 int is_empty(Queue queue) {
     return queue.front == -1;
 }
@@ -127,7 +133,10 @@ void enqueue(Queue *queue, int value) {
         printf("Queue overflow\n");
     }
 }
+```
 
+
+```
 int dequeue(Queue *queue) {
     if (!is_empty(*queue)) {
         int dequeued_value = queue->items[queue->front];
@@ -150,29 +159,6 @@ int front(Queue queue) {
         printf("Queue is empty\n");
         return -1;
     }
-}
-
-int main() {
-    Queue queue;
-    initialize(&queue, 3);
-
-    enqueue(&queue, 10);
-    enqueue(&queue, 20);
-    enqueue(&queue, 30);
-
-    printf("Front element: %d\n", front(queue));
-
-    printf("Dequeue element: %d\n", dequeue(&queue));
-    printf("Dequeue element: %d\n", dequeue(&queue));
-
-    printf("Front element: %d\n", front(queue));
-
-    enqueue(&queue, 40);
-    enqueue(&queue, 50);
-    printf("Dequeue element: %d\n", dequeue(&queue));
-    printf("Front element: %d\n", front(queue));
-
-    return 0;
 }
 ```
 
