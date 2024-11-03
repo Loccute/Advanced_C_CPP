@@ -133,10 +133,8 @@ void enqueue(Queue *queue, int value) {
         printf("Queue overflow\n");
     }
 }
-```
 
 
-```
 int dequeue(Queue *queue) {
     if (!is_empty(*queue)) {
         int dequeued_value = queue->items[queue->front];
