@@ -105,10 +105,8 @@ void insert(List *L, int data, int pos){
 }
 ```
 
-
-
 ### g. Xóa node cuối cùng của list:
-Đầu tiên ta kiểm tra xem List có rỗng không, nếu có, ta in ra "List is empty!" rồi thoát khỏi hàm.
+Đầu tiên ta kiểm tra xem List có rỗng không, nếu có, ta in ra "List is empty!" rồi thoát khỏi hàm. Nếu List chỉ có 1 phần tử, ta xóa phần tử đó và gán pHead và pTail của List với con trỏ NULL. Nếu List có từ 2 phần tử trở lên, ta sẽ duyệt lần lượt các phần tử trong list. Ta khởi tạo con trỏ p = L->pHead để duyệt qua các phần tử, con trỏ q = NULL để lưu lại vị trí ngay phía trước sau khi con trỏ p duyệt qua. Ta dùng while lặp cho đến khi con trỏ p trỏ tới Node cuối trong List, khi đó q trỏ tới Node ngay phía trước Node cuối. Ta thực hiện gán con trỏ pNext của q là NULL và gán pHead = q (q lúc này là con trỏ trỏ đến Node cuối trong List). Sau đó ta thực hiện xóa Node mà p trỏ tới. 
 
 ```
 void popback(List *L){
@@ -135,5 +133,130 @@ void popback(List *L){
     p = NULL;
 }
 ```
+### h. Xóa Node đầu tiên của List:
+Đầu tiên ta kiểm tra xem List có rỗng không, nếu có, ta in ra "List is empty!" rồi thoát khỏi hàm. Nếu không, ta tạo Node p = L->phead là con trỏ đến Node đầu tiên của List.
+Ta cần pHead trỏ đến Node thứ 2 của List nên pHead = p->pNext. Nếu List chỉ có 1 phần tử, ta gán L->pTail = NULL. Tiếp đó, ta thực hiện xóa Node p trỏ tới.
 
 
+```
+void popfront(List *L){
+    if (isempty(*L)) {
+        printf("List is empty!\n");
+        return;
+    }
+    Node *p = L->pHead;
+    if (p == L->pTail) L->pTail = NULL;
+    L->pHead = p->pNext;
+    p->pNext = NULL;
+    free(p);
+    p = NULL;
+}
+```
+### i. Xóa 1 Node ở vị trí bất kì:
+Đầu tiên ta kiểm tra xem List có rỗng không, nếu có, ta in ra "List is empty!" rồi thoát khỏi hàm. Nếu không, ta khởi tạo 1 biến k = 0 để chỉ phần tử đầu tiên của List và con trỏ p = L->pHead để biểu diễn phần tử đầu tiên của List. Ta duyệt qua lần lượt các phần tử trong List và đồng thời tăng k lên 1. Ta lặp lại đến khi k = pos - 1 chỉ phần tử liền trước cần xóa hoặc duyệt đến cuối List. Nếu ta duyệt đến cuối danh sách mà k vẫn không bằng pos - 1 thì in ra "Don't find the position need to delete!" rồi thoát khỏi hàm. Nếu không, ta tạo con trỏ p = p->pNext trỏ tới Node cần xóa. Sau đó thực hiện xóa Node tương tự như hai hàm xóa bên trên.
+
+```
+void delete_Node(List *L, int pos){
+    if (isempty(*L)) {
+        printf("List is empty!\n");
+        return;
+    }
+    int k = 0;
+    Node *p = L->pHead;
+    while((p->pNext != NULL) && (k != pos - 1)) {
+        p = p->pNext;
+        k++;
+    }
+    if (k != pos - 1) {
+        printf("Don't find the position need to delete!\n");
+        return;
+    }
+
+    Node *q = p->pNext;
+    p->pNext = q->pNext;
+    if (L->pTail == q) L->pTail = p;
+    q->pNext = NULL;
+    free(q);
+    q = NULL;
+}
+```
+### j. Lấy giá trị phần tử đầu danh sách:
+Ta chỉ cần trả về data của Node mà pHead của List trỏ tới.
+```
+int front(List L){
+    return L.pHead->data;
+}
+```
+### k. Lấy giá trị phần tử cuối danh sách:
+Ta chỉ cần trả về data của Node mà pTail của List trỏ tới.
+```
+int back(List L){
+    return L.pTail->data;
+}
+```
+
+### l. Tính số lượng phần tử trong List:
+Ta khởi tạo 1 con trỏ p = L.pHead để duyệt lần lượt qua các Node của List. Ta khởi tạo biến đếm size = 1 vì ban đầu p đã trỏ tới Node đầu tiên của List. Ta tiến hành duyệt qua các Node của List, mỗi lần duyệt thì size sẽ tăng lên 1. Cuối cùng, ta trả về biến size lưu số lượng phần tử của List.
+
+```
+int size(List L){
+    Node *p = L.pHead;
+    int size = 1;
+    while(p->pNext != NULL){
+        size++;
+        p = p->pNext;
+    }
+    return size;
+}
+```
+
+### m. Lấy giá trị của Node bất kì trong List:
+Ta khởi tạo biến đếm k = 0 và con trỏ p = L.pHead để duyệt qua các phần tử trong List. Mỗi lần duyệt qua 1 phần tử, biến k tăng lên 1 đơn vị. Ta duyệt đến cuối danh sách hoặc khi k = pos. Nếu duyệt đến cuối danh sách mà không tìm thấy phần tử thứ pos, ta sẽ trả về mã lỗi ERROR_GET (được define là -999). Nếu tìm thấy, ta trả về giá trị data đang lưu ở Node đó.
+
+```
+int get(List L, int pos){
+    int k = 0;
+    Node *p = L.pHead;
+    while ((p->pNext != NULL) && (k != pos)){
+        k++;
+        p = p->pNext;
+    }
+    if (k != pos) return ERROR_GET; // -999
+    return p->data;
+}
+```
+
+### n. In các phần tử trong List:
+Ta duyệt và in lần lượt các phần tử trong List theo thứ tự.
+
+```
+void display(List L){
+    Node *p = L.pHead;
+    int i = 0;
+    while(p != NULL){
+        printf("Value of Node %d: %d\n", i, p->data);
+        p = p->pNext;
+        i++;
+    }
+}
+```
+
+### o. Xóa danh sách:
+Đầu tiên ta kiểm tra xem List có rỗng không, nếu có, ta thoát khỏi hàm. Nếu không, ta thực hiện xóa List. Đầu tiên ta tạo con trỏ p = L->pHead để duyệt qua các phần tử của List, sau đó, ta gán 2 con trỏ pHead và pTail bằng NULL. Sau đó ta duyệt qua các phần tử của List cho đến khi p = NULL. Mỗi lần duyệt qua 1 phần tử, ta tạo con trỏ q để lưu vị trí con trỏ p trỏ tới và thực hiện xóa con trỏ q đó. Cuối cùng, ta đã xóa thành công List đó. 
+
+```
+void free_list(List *L){
+    if (isempty(*L)) return;
+    Node *p = L->pHead;
+    L->pTail = NULL;
+    L->pHead = NULL;
+    while(p != NULL){
+        Node *q = p;
+        p = q->pNext;
+        // free(q)
+        q->pNext = NULL;
+        free(q);
+        q = NULL;
+    }
+}
+```
