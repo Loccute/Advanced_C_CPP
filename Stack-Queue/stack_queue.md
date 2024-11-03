@@ -109,8 +109,9 @@ void initialize(Queue *queue, int size)
     queue->rear = -1;
     queue->size = size;
 }
+```
 
-Ta dùng hàm "dequeue" để thêm giá trị mới vào cuối hàng đợi. Đầu tiên ta cần kiểm tra queue có đầy hay không bằng hàm "is_full", nếu queue đầy thì ta in ra màn hình "Queue overflow" và kết thúc hàm. Nếu queue vẫn còn chỗ trống, ta tiếp tục kiểm tra xem queue có rỗng không bằng hàm "is_empty", nếu rỗng, ta gắn cả front và rear của queue lên 0. Nếu không, ta tăng vị trí rear lên 1 đơn vị và lấy dư với size để tránh nó vượt quá kích thước của queue. Cuối cùng thêm giá trị vào vị trí rear chỉ tới.
+Ta dùng hàm "enqueue" để thêm giá trị mới vào cuối hàng đợi. Đầu tiên ta cần kiểm tra queue có đầy hay không bằng hàm "is_full", nếu queue đầy thì ta in ra màn hình "Queue overflow" và kết thúc hàm. Nếu queue vẫn còn chỗ trống, ta tiếp tục kiểm tra xem queue có rỗng không bằng hàm "is_empty", nếu rỗng, ta gắn cả front và rear của queue lên 0. Nếu không, ta tăng vị trí rear lên 1 đơn vị và lấy dư với size để tránh nó vượt quá kích thước của queue. Cuối cùng thêm giá trị vào vị trí rear chỉ tới.
 
 ```
 int is_empty(Queue queue) {
@@ -133,8 +134,11 @@ void enqueue(Queue *queue, int value) {
         printf("Queue overflow\n");
     }
 }
+```
 
+Ta dùng hàm "dequeue" để xóa và lấy ra giá trị ở đầu hàng đợi. Nếu Queue rỗng, ta in ra "Queue underflow" rồi return -1 biểu thị không xóa được. Nếu không, ta tạo 1 biến dequeued_value để lưu giá trị ở đầu queue. Sau đó ta kiểm tra nếu front = rear, có nghĩa là queue rỗng, thì ta reset lại front = rear = -1. Nếu không, ta tăng vị trí front lên 1 đơn vị và lấy dư với size để tránh nó vượt quá kích thước của queue. Cuối cùng, ta trả về giá trị dequeued_value.
 
+```
 int dequeue(Queue *queue) {
     if (!is_empty(*queue)) {
         int dequeued_value = queue->items[queue->front];
@@ -149,7 +153,9 @@ int dequeue(Queue *queue) {
         return -1;
     }
 }
-
+```
+Ta dùng hàm "front" để lấy giá trị ở đầu hàng đợi. Nếu Queue rỗng, ta in ra "Queue is empty" rồi return -1 biểu thị không truy xuất được giá trị. Nếu không, ta trả về giá trị ở đầu hàng đợi (vị trí lưu ở queue.front). 
+```
 int front(Queue queue) {
     if (!is_empty(queue)) {
         return queue.items[queue.front];
