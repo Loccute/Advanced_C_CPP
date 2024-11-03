@@ -45,61 +45,94 @@ void Create_list(List *L){
     L->pHead = NULL;
     L->pTail = NULL;
 }
-``
-### c. Kiểm tra List rỗng:
-
-
-
-### b. Chèn một node vào cuối list:
 ```
-void push_back(node** array, int value)
+### c. Kiểm tra List rỗng:
+Ta kiểm tra xem 1 list có rỗng không bằng cách so sánh pHead với con trỏ NULL:
+```
+bool isempty(List L)
 {
-    node *temp, *p;
-    temp = createNode(value);
-    
-    p = *array;          // use p instead of array because we are using pointer, use array will change the structure of linkedlist
-
-    if (*array == NULL)   // if array doesn't have any node yet
-    {
-        
-        *array = temp;
-    }
-    else                // if array has some node
-    {      
-        while (p->next != NULL) // which mean the current node is not the last node
-        {
-            p = p->next;    // check next node until it a last node
-            
-        }
-        
-        p->next = temp;     // change it next member point to address of new node have just create
-    }
+    return L.pHead == NULL;
 }
 ```
 
-### c. Xóa node cuối cùng của list:
+### d. Chèn một node vào cuối list:
+Ta truyền 1 list và giá trị cần thêm vào hàm. Đầu tiên ta dùng hàm CreateNode để tạo 1 con trỏ Node p mới để chứa giá trị cần chèn. Tiếp theo ta thực hiện chèn Node vào cuối List. Ta xét trường hợp List rỗng, ta sẽ gán con trỏ pHead và pTail trỏ đến p sau đó thoát khỏi hàm. Nếu List không rỗng, ta sẽ tạo 1 con trỏ trỏ tới Node mà pHead trỏ tới và duyệt trên List cho đến Node cuối của List. Sau đó ta cho con trỏ pNext của Node cuối trỏ tới Node p và con trỏ pTail trỏ tới Node p.  
 ```
-void pop_back(node **array)
-{
-    node *p, *temp;
-    p = *array;
-    int i = 0; // to 
-
-    while (p->next != NULL)     // free the last node in the list
-    {
-        p = p->next;
-        i++;
+void pushback(List *L, int data){
+    Node *p = CreateNode(data);
+    if (isempty(*L)) {
+        L->pHead = p;
+        L->pTail = p;
+        return;
     }
+    Node *q = L->pHead;
+    while(q->pNext != NULL) q = q->pNext;
+    q->pNext = p;
+    L->pTail = p;
+}
+```
+
+### e. Chèn 1 node vào đầu list:
+Ta truyền 1 list và giá trị cần thêm vào hàm. Đầu tiên ta dùng hàm CreateNode để tạo 1 con trỏ Node p mới để chứa giá trị cần chèn. Tiếp theo ta thực hiện chèn Node vào đầu List. Ta xét trường hợp List rỗng, ta sẽ gán con trỏ pHead và pTail trỏ đến p sau đó thoát khỏi hàm. Nếu List không rỗng, ta cho con trỏ pNext của p trỏ tới Node mà con trỏ pHead của List trỏ tới. Sau đó ta cho con trỏ pHead trỏ tới p.
+```
+void pushfront(List *L, int data){
+    Node *p = CreateNode(data);
+    if (isempty(*L)) {
+        L->pHead = p;
+        L->pTail = p;
+        return;
+    }
+    p->pNext = L->pHead;
+    L->pHead = p;
+}
+```
+
+### f. Thêm phần tử vào 1 vị trí bất kì trong list:
+Ta truyền 1 list, giá trị cần thêm, và vị trí để thêm phần tử vào hàm. Đầu tiên ta dùng hàm CreateNode để tạo 1 con trỏ Node p mới để chứa giá trị cần chèn. Ta khởi tạo 1 biến k = 0 để chỉ phần tử đầu tiên của List và con trỏ  q = L->pHead để biểu diễn phần tử đầu tiên của List. Ta duyệt qua lần lượt các phần tử trong List và đồng thời tăng k lên 1. Ta lặp lại đến khi k = pos - 1 chỉ phần tử liền trước cần chèn hoặc duyệt đến cuối List. Tiếp theo ta kiểm tra xem nếu duyệt đến cuối danh sách thì ta gán pTail = p (giống như chèn Node vào cuối danh sách). Nếu đến đúng vị trí cần chèn, ta gán pNext của p cho pNext của q (trỏ đến phần tử thứ pos của List). Cuối cùng, ta lấy pNext của q gán cho p để chèn hoàn tất.
+
+```
+void insert(List *L, int data, int pos){
+    Node *p = CreateNode(data);
+    int k = 0;
+    Node *q = L->pHead;
+    while((q->pNext != NULL) && (k != pos - 1)){
+        k++;
+        q = q->pNext;
+    }
+    if (q->pNext != NULL) p->pNext = q->pNext;
+    else L->pTail = p;
+    q->pNext = p;
+}
+```
+
+
+
+### g. Xóa node cuối cùng của list:
+Đầu tiên ta kiểm tra xem List có rỗng không, nếu có, ta in ra "List is empty!" rồi thoát khỏi hàm.
+
+```
+void popback(List *L){
+    if (isempty(*L)) {
+        printf("List is empty!\n");
+        return;
+    }
+    if (L->pHead == L->pTail){
+        L->pTail = NULL;
+        free(L->pHead);
+        L->pHead = NULL;
+        return;
+    }
+    Node *p = L->pHead;
+    Node *q = NULL;
+    while(p->pNext != NULL)
+    {
+        q = p;
+        p = p->pNext;
+    }
+    q->pNext = NULL;
+    L->pTail = q;
     free(p);
-
-    temp = *array;
-    int j;
-    for ( j = 0; j < i - 1 ; j++)    // change the next member of the node at the (last - 1) position to NULL
-    {
-        temp = temp->next;
-    }
-    
-    temp->next = NULL;
+    p = NULL;
 }
 ```
 
