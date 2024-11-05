@@ -101,7 +101,7 @@ Thì dữ liệu của struct được lưu như sau:
 
 ![image](https://github.com/user-attachments/assets/3e749657-77fa-4c78-b2b4-cfbab5b4357b)
 
-Như ta thấy, biến var1 vẫn được lưu ở byte nhớ đầu tiên. Nhưng tiếp theo bến var3 được lưu theo thứ tự khai báo trong struct. Vì biến var3 là kiểu uint16_t nên chỉ chiếm 2 byte và sau khi lưu var1 thì vẫn còn 3 chỗ trống nên ta lưu biến var3 ở 2 byte kế tiếp biến var1. Còn dư 1 byte ta thêm vào 1 padding.
+Như ta thấy, biến var1 vẫn được lưu ở byte nhớ đầu tiên. Nhưng tiếp theo biến var3 được lưu theo thứ tự khai báo trong struct. Vì biến var3 là kiểu uint16_t nên chỉ chiếm 2 byte và sau khi lưu var1 thì vẫn còn 3 chỗ trống nên ta lưu biến var3 ở 2 byte kế tiếp biến var1. Còn dư 1 byte ta thêm vào 1 padding.
 
 Biến var2 kiểu uint32_t có kích thước 4 byte nên được lưu ở là 4 byte dòng tiếp theo vì 1 byte dòng đầu còn dư sau khi lưu biến var1 và var3 không đủ chỗ.
 
@@ -181,7 +181,7 @@ typedef union{
     uint16_t var3;   // 2 byte + 2 padding
 }frame;
 ```
-Do đó kích thước của struct này là 4 byte
+Do đó kích thước của union này là 4 byte
 
 Ta có ví dụ thứ 2:
 ```
@@ -226,7 +226,9 @@ int main(){
 
 Output:
 var1 = 50
+
 var2 = 50
+
 var3 = 50
 
 Giải thích: đầu tiên ta gán data.var1 = 5 thì vùng địa chỉ chung của 3 biến sẽ lưu giá trị 5. Sau đó ta gán data.var2 = 6, ghi đè lên giá trị 5. Sau đó ta gán data.var3 = 50, ghi đè lên giá trị 6. Do đó var1, var2, var3 có chung giá trị là 50.
