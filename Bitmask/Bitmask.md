@@ -47,7 +47,7 @@ int resultRightShift = num >> shiftAmount;
 ```
 
 ## 3. Một số ví dụ và ứng dụng:
-Ví dụ 4:
+Ví dụ 1:
 ```
 #include <stdio.h>
 #include <stdint.h>
