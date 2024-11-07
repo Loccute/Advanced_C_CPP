@@ -68,6 +68,8 @@ int main() {
 
 #### b. Pointer to Constant:
 Định nghĩa một con trỏ không thể thay đổi giá trị tại địa chỉ mà nó trỏ đến thông qua dereference nhưng giá trị tại địa chỉ đó có thể thay đổi.
+
+Tác dụng: Dùng con trỏ hằng để chỉ đọc giá trị tại địa chi mà nó trỏ tới mà không thay đổi giá trị tại đó. Ngoài ra, để đọc giá trị của dữ liệu bất kì mà muốn tiết kiệm bộ nhớ, thay vì khai báo 1 biến thông thường để đọc thì ta dùng 1 biến con trỏ (có kích thước cố định là 8 bytes ở kiến trúc 64 bit) trỏ tới địa chỉ chứa dữ liệu cần đọc và truy xuất thông qua biến con trỏ đó.
 	
 Ví dụ:
 
@@ -94,6 +96,8 @@ int main() {
 
 #### c. Constant Pointer:
 Định nghĩa một con trỏ mà giá trị nó trỏ đến (địa chỉ ) không thể thay đổi. Tức là khi con trỏ này được khởi tạo thì nó sẽ không thể trỏ tới địa chỉ khác.
+
+Tác dụng: Ta tạo ra được một con trỏ đại diện cho 1 địa chỉ bất kì nào đó. Con trỏ đó sẽ trỏ tới địa chỉ cố định không thay đổi trong suốt quá trình thực thi chương trình. Ta có thể sử dụng trong các chương trình nhúng khi muốn setup các thanh ghi, nên cần các con trỏ cố định duy nhất để trỏ tới địa chỉ của các thanh ghi đó, thuận tiện để thao tác với các thanh ghi trên vi điều khiển.
 ```
 #include <stdio.h>
 #include <stdlib.h>
