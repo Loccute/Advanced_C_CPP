@@ -4,6 +4,10 @@ Tính đóng gói (Encapsulation) là ẩn đi các property “mật” khỏi 
 
 Trong trường hợp ta muốn đọc hoặc ghi các property này, thì ta sẽ truy cập gián tiếp thông qua các method ở quyền truy cập public.
 
+Có 2 loại method dùng để truy cập đến các property ở phạm vi private:
++ method setter: dùng để thiết lập giá trị cho các property.
++ method getter: để đọc giá trị của các property.
+
 Ví dụ:
 ```
 class SinhVien{
@@ -13,7 +17,7 @@ class SinhVien{
    
     public:
         SinhVien(){
-            static int ID = 1;
+            static int ID = 1; // dùng method static để ID tự động tăng mỗi khi tạo 1 đối tượng mới.
             id = ID;
             ID++;
         }
@@ -43,6 +47,8 @@ Tính kế thừa (Inheritance) là khả năng sử dụng lại các property 
 
 Có 3 kiểu kế thừa là public, private và protected. Những property và method được kế thừa từ class cha sẽ nằm ở quyền truy cập của class con tương ứng với kiểu kế thừa.
 
+Các method của lớp cha có thể được ghi đè (override) bằng các method của lớp con khi các method trùng tên. Khi 1 đối tượng thuộc lớp con gọi 1 method có trong lớp con nhưng trùng với method trong lớp cha, method trong lớp con sẽ được chạy.
+
 ### a. Kế thừa public:
 Các member public của class cha vẫn sẽ là public trong class con.
 
@@ -63,7 +69,7 @@ class DoiTuong{
 
     public:
         DoiTuong(){  
-            static int ID = 1;
+            static int ID = 1; // dùng method static để ID tự động tăng mỗi khi tạo 1 đối tượng mới.
             id = ID;
             ID++;
         }
@@ -129,7 +135,7 @@ class GiaoVien : public DoiTuong{
 ```
 
 ### b. Kế thừa protected:
-Các member public, protected của class cha sẽ là protected trong class con.
+Các member public, protected của class cha sẽ là protected trong class con. (Những gì kế thừa được được chuyển sang phạm vi protected trong class con)
 
 Các member private của class cha không thể truy cập trực tiếp từ class con nhưng có thể được truy cập gián tiếp qua các phương thức public hoặc protected của class cha.
 
@@ -180,7 +186,7 @@ class SinhVien : protected DoiTuong{
 ```
 
 ### c. Kế thừa private:
-Các member public, protected của class cha sẽ trở thành private trong class con.
+Các member public, protected của class cha sẽ trở thành private trong class con. (Những gì kế thừa được được chuyển sang phạm vi private trong class con)
 
 Các member private của class cha không thể truy cập trực tiếp từ class con nhưng có thể được truy cập gián tiếp qua các phương thức public hoặc protected của class cha.
 
@@ -229,8 +235,27 @@ class SinhVien : private DoiTuong{
         }
 };
 ```
+
+### d. Đa kế thừa: 
+Một class con có thể kế thừa từ 2 hoặc nhiều class cha. Nên cân nhắc việc đa kế thừa nhiều class vì có thể dễ gây xung đột phạm vi kế thừa giữa các class khác nhau.
+
+Ví dụ: 
+```
+class Doituong{
+    // các thuộc tính và phương thức tương ứng
+};
+
+class Sinhvien{
+    // các thuộc tính và phương thức tương ứng
+};
+
+class Hocsinh : public Doituong, public Sinhvien{
+    // các thuộc tính và phương thức tương ứng
+};
+```
+
 ## 3. Tính trừu tượng:
-Tính trừu tượng đề cập đến việc ẩn đi các chi tiết cụ thể của một đối tượng và chỉ hiển thị những gì cần thiết để sử dụng đối tượng đó.
+Tính trừu tượng đề cập đến việc ẩn đi các chi tiết cụ thể của một đối tượng và chỉ hiển thị những gì cần thiết để sử dụng đối tượng đó bằng cách thiết lập phạm vi truy cập là **private**.
 
 Ví dụ:
 ```
@@ -306,6 +331,10 @@ Tính đa hình có thể được chia thành hai loại chính:
 + Đa hình tại thời điểm biên dịch (Compile-time Polymorphism).
 + Đa hình tại thời điểm chạy (Run-time Polymorphism).
 
+### a. Đa hình tại thời điểm biên dịch (Compile-time Polymorphism).
+
+### b. Đa hình tại thời điểm chạy (Run-time Polymorphism).
+
 Ví dụ:
 ```
 #include <iostream>
@@ -345,6 +374,6 @@ int main(int argc, char const *argv[]){
 Khác biệt rõ ràng giữa ẩn dữ liệu (đóng gói) và trừu tượng hóa dữ liệu là:
 + Trừu tượng là chỉ trích xuất thông tin có liên quan và bỏ qua các chi tiết không cần thiết. Còn đóng gói là ẩn dữ liệu khỏi các phần của chương trình.
 + Mục đích của abstraction là để che giấu sự phức tạp. Mặt khác, encapsulation là để đạt được tính đóng gói, che dấu và bảo vệ các thuộc tính của class để không bị sửa đổi bởi bên ngoài.
-+ Tính trừu tượng tập trung vào hành vi có thể quan sát được của dữ liệu. Việc đóng gói tập trung vào Hạn chế hoặc cho phép sử dụng dữ liệu trong một vùng và bảo mật dữ liệu.
++ Tính trừu tượng tập trung vào hành vi có thể quan sát được của dữ liệu. Việc đóng gói tập trung vào việc hạn chế hoặc cho phép sử dụng dữ liệu trong một vùng và bảo mật dữ liệu.
 
 
