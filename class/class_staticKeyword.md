@@ -65,11 +65,11 @@ int main()
 ## 3. Constructor và Destructor
 Constructor trong C++ là một function sẽ được tự động gọi khi khởi tạo object. Constructor sẽ có tên trùng với tên của class.
 
-Có 4 cách khởi tạo constructor cho 1 class:
+Có 5 cách khởi tạo constructor cho 1 class:
 
-Cách 1: dùng constructor mặc định do trình biên dịch tự sinh ra khi biên dịch (không cần khởi tạo).
+**Cách 1**: dùng constructor mặc định do trình biên dịch tự sinh ra khi biên dịch (không cần khởi tạo).
 
-Cách 2: Khai báo constructor không tham số truyền vào, ta sẽ tự gán các thuộc tính với các giá trị mong muốn trực tiếp trong constructor.
+**Cách 2**: Khai báo constructor không tham số truyền vào, ta sẽ tự gán các thuộc tính với các giá trị mong muốn trực tiếp trong constructor.
 
 VD:
 ```
@@ -83,7 +83,7 @@ class Hinhchunhat{
   }
 };
 ```
-Cách 3: Constructor với các tham số truyền vào tương ứng. Khi ta khởi tạo đối tượng ở hàm main, ta phải truyền các giá trị tham số vào tương ứng với hàm tạo.
+**Cách 3**: Constructor với các tham số truyền vào tương ứng. Khi ta khởi tạo đối tượng ở hàm main, ta phải truyền các giá trị tham số vào tương ứng với hàm tạo.
 
 VD:
 ```
@@ -102,7 +102,7 @@ int main(){
 }
 ```
 
-Cách 4: Ta cũng truyền danh sách tham số khởi tạo vào constructor như cách 3, nhưng ta khởi tạo giá trị mặc định cho các tham số ngay tại danh sách tham số cho hàm. Làm như vậy, nếu ở hàm main ta khởi tạo 1 đối tượng của class đó
+**Cách 4**: Ta cũng truyền danh sách tham số khởi tạo vào constructor như cách 3, nhưng ta khởi tạo giá trị mặc định cho các tham số ngay tại danh sách tham số cho hàm. Làm như vậy, nếu ở hàm main ta khởi tạo 1 đối tượng của class đó
 , nếu ta truyền đủ tham số đầu vào thì đối tượng sẽ được khởi tạo theo như giá trị tham số truyền vào đó. Nếu không truyền tham số đầu vào hay truyền ít hơn tham số truyền vào, ta sẽ xét theo thứ tự các tham số từ đầu đến cuối,
 nếu tham số nào đã được truyền giá trị vào thì ta dùng giá trị đó để khởi tạo, nếu tham số nào không có giá trị khởi tạo, ta dùng giá trị mặc định để khởi tạo.
 
@@ -125,7 +125,7 @@ int main(){
 }
 ```
 
-Cách 5: Ta truyền vào danh sách tham số (có thể khởi tạo giá trị hoặc không), ta không gán giá trị cho các thuộc tính trong hàm mà ta gán thông qua dấu ":". Nếu không truyền vào tham số, ta có thể gán trực tiếp giá trị cho các thuộc tính. Để dễ hình dung ta có ví dụ sau:
+**Cách 5**: Ta truyền vào danh sách tham số (có thể khởi tạo giá trị hoặc không), ta không gán giá trị cho các thuộc tính trong hàm mà ta gán thông qua dấu ":". Nếu không truyền vào tham số, ta có thể gán trực tiếp giá trị cho các thuộc tính. Để dễ hình dung ta có ví dụ sau:
 
 VD1: truyền vào danh sách tham số
 ```
