@@ -157,13 +157,15 @@ class HinhChuNhat {
 public:
     double chieuDai;
     double chieuRong;
+    string hinh;
 
-    HinhChuNhat(){
+    HinhChuNhat(string hinhanh){
         chieuDai = 10;
         chieuRong = 9;
+        hinh = hinhanh;
     }
     ~HinhChuNhat(){
-        std::cout << "Destructor " << '\n';
+        std::cout << "Destructor: " << hinh << '\n';
     }
 
 
@@ -176,19 +178,23 @@ public:
 
 int main()
 {
-    HinhChuNhat hinh1;
-    std::cout << "Dien tich: " << hinh1.tinhDienTich() << '\n';
+    HinhChuNhat hinh1(hinh1);
+    HinhChuNhat hinh2(hinh2);
 
 
     return 0;
 }
+// output là
+// Destructor: hinh2
+// Destructor: hinh1
+// vì object hinh2 được khởi tạo sau nên lưu ở đỉnh stack nên được giải phóng trước, còn hinh1 được giải phóng sau
 ```
 
+## 4. Biến và hàm static trong class (hay thuộc tính và phương thức static)
+Khi một biến trong class được khai báo với từ khóa static, thì tất cả các object sẽ dùng chung địa chỉ của biến này. Thuộc tính static của class phải được khai báo toàn cục bên ngoài class, biến này được cung cấp 1 địa chỉ cố định mà các object trong class đều dùng chung địa chỉ khi truy cập đến biến (thuộc tính) này. Nếu biến được khởi tạo thì nó lưu ở phân vùng .data, nếu biến chưa khởi tạo thì được lưu ở phân vùng .bss.
 
-
-Biến static trong class
-Khi một biến trong class được khai báo với từ khóa static, thì tất cả các object sẽ dùng chung địa chỉ của biến này.
 Ví dụ:
+```
 class HinhChuNhat {
 
 public:
@@ -199,7 +205,7 @@ public:
 };
 
 
-int HinhChuNhat::var;
+int HinhChuNhat::var; // biến var phải được khai báo toàn cục bên ngoài class để cấp phát địa chỉ lưu biến này, biến này chưa khởi tạo nên nằm ở vùng .bss
 
 int main()
 {
@@ -218,6 +224,40 @@ int main()
 
     return 0;
 }
+```
+
+Static method: các phương thức trong class được khai báo static có thể được truy cập trực tiếp từ class mà không cần qua đối tượng cụ thể của class đó. Static method chỉ có thể truy cập tới static property mà không thể truy cập đến các property khác của class.
+
+Ví dụ:
+```
+class HinhChuNhat {
+
+public:
+    double chieuDai;
+    double chieuRong;
+    
+    static int var;
+    static void Display(){
+        cout << "This is the static method" << endl;
+        var = 20;
+    }
+};
+
+
+int HinhChuNhat::var;
+
+int main()
+{
+    HinhChuNhat hinh1;
+    HinhChuNhat hinh2;
+    HinhChuNhat hinh3;
+
+    Hinhchunhat::Display();
+
+
+    return 0;
+}
+```
 
 
 
