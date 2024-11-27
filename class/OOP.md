@@ -331,7 +331,10 @@ Tính đa hình có thể được chia thành hai loại chính:
 + Đa hình tại thời điểm biên dịch (Compile-time Polymorphism).
 + Đa hình tại thời điểm chạy (Run-time Polymorphism).
 
-### a. Đa hình tại thời điểm biên dịch (Compile-time Polymorphism).
+### 4.1. Đa hình tại thời điểm biên dịch (Compile-time Polymorphism).
+#### 4.1.1 Nạp chồng hàm (Function overloading)
+
+#### 4.1.2 Nạp chồng toán tử (Operator overloading)
 
 ### b. Đa hình tại thời điểm chạy (Run-time Polymorphism).
 
