@@ -315,6 +315,12 @@ Tính đa hình có thể được chia thành hai loại chính:
 
 ### 4.1. Đa hình tại thời điểm biên dịch (Compile-time Polymorphism)
 #### 4.1.1 Nạp chồng hàm (Function overloading)
+Ta khai báo các hàm có tên giống nhau nhưng khác danh sách tham số (có thể là số lượng tham số hoặc kiểu dữ liệu của từng tham số trong danh sách).
+
+Khi gọi 1 hàm có cùng tên với ít nhất 1 hàm khác, nớ sẽ so sánh danh sách tham số truyền vào để gọi hàm tương ứng theo thứ tự ưu tiên như sau: Số lượng tham số --> kiểu tham số từ trái qua.
+Nếu kiểu tham số không tương thích, trình biên dịch sẽ tự động ép kiểu để tương thích.
+
+Ví dụ khi ép kiểu từ double --> int thì sẽ bỏ đi phần thập phân; còn từ int --> double thì thêm phần thập phân bằng 0.
 
 Ví dụ:
 ```
@@ -342,16 +348,95 @@ class TinhToan{
 
 int main(int argc, char const *argv[]){
 
-    TinhToan th, th1, th2;
-    cout << th.tong(2, 5) << endl;
-    cout << th1.tong(2, 5, 7, 6.7) << endl;
-    cout << th2.tong(2, 3.5) << endl;
-
+    TinhToan th, th1, th2, th3;
+    cout << th.tong(2, 5) << endl;            // gọi hàm tong(int a, int b) --> kq = 7
+    cout << th1.tong(2, 5, 7, 6.7) << endl;   // gọi hàm tong(int a, int b, int c, double d) --> kq = 20.7
+    cout << th2.tong(2, 3.5) << endl;         // gọi hàm (int a, double b) --> kq = 5.5
+    cout << th3.tong(2.3, 3.5) << endl;       // gọi hàm tong(int a, double b) vì trong 2 hàm tổng 2 tham số thì hàm đó thích hợp nhất khi kiểu của tham số truyền vào thứ 2 là kiểu double, do đó tham số truyền vào đầu tiên sẽ bị ép kiểu thành kiểu int nên 2.3 --> 2. Do đó kq = 2 + 3.5 = 5.5.
     return 0;
 }
 ```
 
 #### 4.1.2 Nạp chồng toán tử (Operator overloading)
+Vì ta chỉ có thể thực hiện các phép toán số học và logic trên các số có kiểu dữ liệu như int, long, short, float, double, ... nhưng kiểu tự định nghĩa class thì không thể thực hiện trực tiếp được. Do đó ta dùng nạp chồng toán tử để định nghĩa lại các phép toán đó để class có thể thực hiện được. 
+
+Cú pháp chung:
+```
+<Kiểu trả về> Operator <Phép toán cần định nghĩa lại> (Tham số truyền vào) {
+    // Nội dung hàm
+    return <giá trị trả về>;
+}
+```
+
+Ví dụ:
+```
+class Phanso{
+    private:
+        int tuso;
+        int mauso;
+    public:
+        Phanso operator + (Phanso const &other);
+};
+
+Phanso Phanso::operator+(Phanso const &other)
+{
+    Phanso kq;
+    kq.tuso = this->tuso * other.mauso + this->mauso * other.tuso;
+    kq.mauso = this->mauso * other.mauso;
+    return kq;
+}
+```
+
+Lưu ý:
+1. Có 4 toán tử không thể định nghĩa lại được: toán tử ".", toán tử phạm vi ":", toán tử 3 ngôi (Ví dụ: (x == 2) ? true:false) và toán tử lấy kích thước "sizeof".
+2. Kiểu trả về của phương thức định nghĩa lại phép gán "=" có thể là kiểu void hoặc kiểu <class *>.
+   Ví dụ:
+   ```
+   Phanso* Phanso::operator=(Phanso const &other)
+   {
+       this->tuso = other.tuso;
+       this->mauso = other.mauso;
+       cout << "Day la ham gan\n";
+       return this;
+   }
+
+   void Phanso::operator=(Phanso const &other)
+   {
+       this->tuso = other.tuso;
+       this->mauso = other.mauso;
+       cout << "Day la ham gan\n";
+   }
+   ```
+   
+3. Để định nghĩa lại toán tử nhập xuất cho class, ta phải dùng hàm bạn (friend) và 2 luồng istream để nhập và ostream để xuất trong thư viện <iostream> với cú pháp như sau: friend <istream/ostream>& (>>/<<) (<istream& is/ostream& os>, <đối tượng cần nhập/xuất>)
+   Ví dụ:
+   ```
+   friend ostream& operator << (ostream& os, Phanso const & T){
+       os << "Tử số: "<< T.tuso << ", Mẫu số: " << T.mauso << "\n";
+       return os;
+   }
+
+   friend istream& operator >> (istream& is, Phanso& T){
+       is >> T.tuso >> T.mauso ;
+       return is;
+   }
+   ```
+4. Ta có thể định nghĩa nạp chồng toán tử 2 ngôi bằng hàm friend như ví dụ sau:
+   ```
+   friend Phanso operator + (Phanso const &a, Phanso const &b){
+       Phanso kq; 
+       kq.tuso = a.tuso * b.mauso + a.mauso * b.tuso;
+       kq.mauso = a.mauso * b.mauso;
+       cout << "Day la ham toan tu 2 ngoi\n";
+       return kq;
+   }
+   ```
+#### 4.1.3 Con trỏ this, tham chiếu và tham trị
+##### a. Con trỏ this:
+Là con trỏ có sẵn trong class dùng để trỏ đến đối tượng đang thao tác. 
+##### b. Tham chiếu:
+
+##### c. Tham trị:
 
 ### 4.2 Đa hình tại thời điểm chạy (Run-time Polymorphism)
 #### 4.2.1 Hàm ảo
