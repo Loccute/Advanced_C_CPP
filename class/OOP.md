@@ -433,11 +433,51 @@ Lưu ý:
    ```
 #### 4.1.3 Con trỏ this, tham chiếu và tham trị
 ##### a. Con trỏ this:
-Là con trỏ có sẵn trong class dùng để trỏ đến đối tượng đang thao tác. 
+Là con trỏ có sẵn trong class dùng để trỏ đến đối tượng đang thao tác. Con trỏ this là hằng con trỏ, mỗi class có 1 con trỏ this khác nhau luôn trỏ về chính đối tượng của class đang thao tác, không thể thay đổi sang địa chỉ khác. Nhưng giá trị tại địa chỉ mà con trỏ trỏ tới có thể thay đổi.
+
+Ví dụ: Đây là hàm nạp chồng toán tử * của class Phanso, trong đó ta truy xuất các thuộc tính như tuso và mauso ở trong class đó bằng con trỏ this
+```
+Phanso Phanso::operator*(Phanso const &other)
+{
+    Phanso kq;
+    kq.tuso = this->tuso * other.tuso;
+    kq.mauso = this->mauso * other.mauso;
+    return kq;
+}
+```
 ##### b. Tham chiếu:
+Tham chiếu là địa chỉ của tham số, nghĩa là ta truyền vào hàm địa chỉ nguyên gốc của tham số. Khác với tham trị, tham chiếu sử dụng địa chỉ nguyên gốc của tham số để thao tác trên hàm mà không cần cấp phát địa chỉ mới, giúp tiết kiệm bộ nhớ. Cách này tiện lợi hơn so với việc truyền vào con trỏ (cũng cần cấp phát địa chỉ trên Ram cho con trỏ).
+
+Cách truyền tham số này có nhược điểm là khi giá trị của tham số trong hàm thay đổi, giá trị nguyên gốc cũng thay đổi theo nên có thể gây ra sai sót không mong muốn. Ta có thể khắc phục bằng cách thêm từ khóa const cho các tham số truyền vào để nó không thể bị thay đổi.
+
+Ta cũng có thể ứng dụng vào class khi ta có thể thêm từ khóa const vào các method getter (đọc giá trị chứ không muốn thay đổi giá trị) để không thể thay đổi giá trị.
+
+Ví dụ:
+```
+int tong(const int& a, const int& b){
+    // Nội dung hàm
+}
+
+int main(){
+    int a = 2, b = 3;
+    int c = tong(&a, &b);
+}
+```
 
 ##### c. Tham trị:
+Tham trị là giá trị của tham số, nghĩa là ta truyền vào hàm giá trị của tham số. Khi đó trong hàm, tham số này sẽ được cấp phát 1 địa chỉ ở trong Ram khác với địa chỉ nguyên gốc của tham số đó khi bắt đầu truyền vào hàm, ta copy giá trị của tham số này để lưu giá trị vào lại địa chỉ ta mới cấp phát trên Ram. Hàm sẽ thao tác với địa chỉ cấp phát trên Ram này nên nếu giá trị tham số thay đổi trong hàm cũng không ảnh hưởng đến giá trị gốc của nó.
 
+Ví dụ:
+```
+int tong(int a, int b){
+    // Nội dung hàm
+}
+
+int main(){
+    int a = 2, b = 3;
+    int c = tong(a, b);
+}
+```
 ### 4.2 Đa hình tại thời điểm chạy (Run-time Polymorphism)
 #### 4.2.1 Hàm ảo
 Hàm ảo là một hàm thành viên được khai báo trong class cha với từ khóa virtual.
