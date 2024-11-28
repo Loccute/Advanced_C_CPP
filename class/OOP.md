@@ -236,24 +236,6 @@ class SinhVien : private DoiTuong{
 };
 ```
 
-### d. Đa kế thừa: 
-Một class con có thể kế thừa từ 2 hoặc nhiều class cha. Nên cân nhắc việc đa kế thừa nhiều class vì có thể dễ gây xung đột phạm vi kế thừa giữa các class khác nhau.
-
-Ví dụ: 
-```
-class Doituong{
-    // các thuộc tính và phương thức tương ứng
-};
-
-class Sinhvien{
-    // các thuộc tính và phương thức tương ứng
-};
-
-class Hocsinh : public Doituong, public Sinhvien{
-    // các thuộc tính và phương thức tương ứng
-};
-```
-
 ## 3. Tính trừu tượng:
 Tính trừu tượng đề cập đến việc ẩn đi các chi tiết cụ thể của một đối tượng và chỉ hiển thị những gì cần thiết để sử dụng đối tượng đó bằng cách thiết lập phạm vi truy cập là **private**.
 
@@ -331,12 +313,8 @@ Tính đa hình có thể được chia thành hai loại chính:
 + Đa hình tại thời điểm biên dịch (Compile-time Polymorphism).
 + Đa hình tại thời điểm chạy (Run-time Polymorphism).
 
-### 4.1. Đa hình tại thời điểm biên dịch (Compile-time Polymorphism).
+### 4.1. Đa hình tại thời điểm biên dịch (Compile-time Polymorphism)
 #### 4.1.1 Nạp chồng hàm (Function overloading)
-
-#### 4.1.2 Nạp chồng toán tử (Operator overloading)
-
-### b. Đa hình tại thời điểm chạy (Run-time Polymorphism).
 
 Ví dụ:
 ```
@@ -373,6 +351,188 @@ int main(int argc, char const *argv[]){
 }
 ```
 
+#### 4.1.2 Nạp chồng toán tử (Operator overloading)
+
+### 4.2 Đa hình tại thời điểm chạy (Run-time Polymorphism)
+#### 4.2.1 Hàm ảo
+Hàm ảo là một hàm thành viên được khai báo trong class cha với từ khóa virtual.
+Khi một hàm là virtual, nó có thể được ghi đè (override) trong class con để cung cấp cách triển khai riêng.
+
+Khi gọi một hàm ảo thông qua một con trỏ hoặc tham chiếu đến lớp con, hàm sẽ được quyết định dựa trên đối tượng thực tế mà con trỏ hoặc tham chiếu đang trỏ tới chứ không dựa vào kiểu của con trỏ.
+
+Ví dụ:
+```
+#include <iostream>
+using namespace std;
+
+class DoiTuong{
+    protected:
+        string ten;
+        int id;
+
+    public:
+        // Hàm ảo
+        virtual void display(){
+            // Nội dung hàm display ở class Doituong
+        }
+};
+
+// class SinhVien kế thừa public class DoiTuong
+class SinhVien : public DoiTuong{
+    protected:
+        string chuyenNganh;
+
+    public:
+        // ghi đè nội dung hàm display ở class cha bằng từ khóa override
+        void display() override {
+            // Nội dung hàm display ở class con SinhVien
+        }
+};
+
+int main(int argc, char const *argv[])
+{
+    SinhVien sv1;
+    sv1.setName("Trung");
+    sv1.setChuyenNganh("TDH");
+
+    DoiTuong *dt;    // con trỏ có kiểu Doituong*
+    dt = &sv1;       // trỏ đến địa chỉ của đối tượng sv1 thuộc class SinhVien
+    dt->display();   // Do đó sẽ gọi hàm display ở class con để ghi đè hàm display ở class cha.
+}
+```
+
+#### 4.2.2 Override và tính đa hình Run-time
+Override là việc ghi đè hàm ảo ở class con bằng cách định nghĩa lại nó. 
+Khi một hàm ảo được ghi đè, hành vi của nó sẽ phụ thuộc vào kiểu của đối tượng thực tế, chứ không phải kiểu của con trỏ hay tham chiếu (đối tượng mà con trỏ trỏ tới hay tham chiếu tham chiếu tới).
+
+Tính đa hình Run-time xảy ra khi quyết định gọi hàm nào (phiên bản của class cha hay class con) được đưa ra tại thời điểm chạy, không phải lúc biên dịch. Điều này giúp chương trình linh hoạt hơn, cho phép việc mở rộng chức năng mà không cần sửa đổi mã nguồn hiện tại.
+
+
+#### 4.2.3 Hàm thuần ảo (Pure vitual function)
+Hàm thuần ảo là một hàm ảo không có phần định nghĩa trong class cha, được khai báo với cú pháp = 0 và khiến class cha trở thành class trừu tượng, nghĩa là không thể tạo đối tượng từ class này.
+
+Những class con kế thừa class trừu tượng bắt buộc phải định nghĩa lại hàm thuần ảo trong class trừu tượng đó.
+
+Ví dụ:
+```
+class cha{
+    public:
+        virtual void display() = 0; // Hàm ảo thuần túy
+};
+
+class con : public cha{
+    public:
+        void display() override{   // Ghi đè hàm ảo thuần túy
+            cout << "display from class con" << endl;
+        }
+};
+```
+
+#### 4.2.4 Đa kế thừa và kế thừa ảo
+##### a. Đa kế thừa:
+Đa kế thừa trong C++ cho phép một class kế thừa từ nhiều class khác. Đa kế thừa thường dùng để kết hợp các chức năng từ nhiều class.
+
+Cần phải cẩn thận khi sử dụng đa kế thừa.
+Khi nhiều lớp cha có các phương thức hoặc thuộc tính trùng tên, việc gọi chúng từ lớp con có thể gây ra sự nhầm lẫn.
+Khi một lớp con kế thừa từ hai lớp cha, mà hai lớp cha này đều cùng kế thừa từ cùng một lớp khác. Tình huống này tạo ra cấu trúc hình thoi (diamond), do đó được gọi là vấn đề "Diamond".
+
+Ví dụ: Class Bố và class Mẹ đều kế thừa từ class Ông. Mà class Ông có phương thức học_giỏi() --> có 1 bản sao phương thức học giỏi ở trong class Bố và 1 bản sao học giỏi ở trong class Mẹ. Khi class Con kế thừa cả 2 class Bố và Mẹ, khi muốn gọi phương thức học_giỏi() thì sẽ bị lỗi vì trình biên dịch không biết nên gọi phương thức đó kế thừa từ lớp Cha hay lớp Mẹ.
+![image](https://github.com/user-attachments/assets/9ac3f5f2-0106-444f-9876-800090ba9b04)
+
+Để khắc phục vấn đề này, ta dùng kế thừa ảo.
+
+##### b. Kế thừa ảo:
+Kế thừa ảo giúp tránh vấn đề diamond problem trong đa kế thừa.
+Kế thừa ảo giúp một bản sao duy nhất của lớp cơ sở chung được kế thừa.
+
+Nó giúp quản lý các lớp liên quan đến phần cứng và giao tiếp. Điều này giúp tránh trùng lặp tài nguyên và quản lý hiệu quả trong hệ thống nhúng.
+
+Ví dụ 1:
+
+```
+#include <iostream>
+using namespace std;
+
+class A {
+    public:
+        A(){ cout << "Constructor A\n"; }
+
+        void hienThiA(){ cout << "Day la lop A\n"; }
+};
+
+class B : virtual public A{
+    public:
+        B(){ cout << "Constructor B\n"; }
+
+        void hienThiB(){ cout << "Day la lop B\n"; }
+};
+
+class C : virtual public A {
+    public:
+        C(){ cout << "Constructor C\n"; }
+
+        void hienThiC(){ cout << "Day la lop C\n"; }
+};
+
+class D : public B, public C{
+    public:
+        D(){ cout << "Constructor D\n"; }
+
+        void hienThiD(){ cout << "Day la lop D\n"; }
+};
+
+int main() {
+    D d;
+    d.hienThiA();
+    return 0;
+}
+```
+
+Ngoài kế thừa ảo, ta có thể giải quyết vấn đề "Diamond" và tình huống class Con, Cha, Mẹ, Ông phía trên như sau:
+Ta sử dụng lớp trừu tượng để định nghĩa interface giảm thiểu xung đột. Lúc này Ông chỉ "di chúc" lại interface của học_giỏi. Bố, Mẹ hay Con muốn học giỏi thì tự thân vận động.
+
+Ví dụ 2:
+```
+class Ong {
+public:
+    virtual void hoc_gioi() const = 0;
+};
+
+class Bo : public Ong {
+public:
+    void ban_sung() {
+    }
+    void hoc_gioi() const override {
+    	cout << "Toi hoc gioi" << endl;
+    }
+};
+
+class Me: public Ong {
+public:
+    void boi_loi() {
+    }
+    void hoc_gioi() const override {
+    	cout << "Toi hoc gioi" << endl;
+    }
+};
+
+class Con: public Bo, public Me {
+public:
+    void hoc_gioi() const override {
+    	cout << "Toi hoc gioi" << endl;
+    }
+};
+
+int main() {
+    Con c;
+    c.hoc_gioi(); 
+    Bo b;
+    b.hoc_gioi(); 
+    Me m;
+    m.hoc_gioi();
+    return 0;
+}
+```
 ## 5. So sánh sự khác nhau giữa tính trừu tượng và tính đóng gói:
 Khác biệt rõ ràng giữa ẩn dữ liệu (đóng gói) và trừu tượng hóa dữ liệu là:
 + Trừu tượng là chỉ trích xuất thông tin có liên quan và bỏ qua các chi tiết không cần thiết. Còn đóng gói là ẩn dữ liệu khỏi các phần của chương trình.
