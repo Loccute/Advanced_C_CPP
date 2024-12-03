@@ -152,7 +152,7 @@ namespace LCD{
     lcd::lcd(){}
     lcd::~lcd(){}
 }
-```cách 
+```
 
 ## 5. Namespace tiêu chuẩn của C++ (std)
 Một trong những namespace quan trọng và phổ biến nhất trong C++ là std. Tất cả các thành phần của thư viện chuẩn C++ (như cout, cin, vector, string) đều được định nghĩa bên trong namespace std.
