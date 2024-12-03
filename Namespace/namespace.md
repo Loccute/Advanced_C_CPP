@@ -116,7 +116,7 @@ int main(int argc, char const *argv[])
 ## 4. Namespace mở rộng
 Namespace có thể được mở rộng bằng cách khai báo nhiều lần cùng một tên namespace trong các phần khác nhau của chương trình. Các khai báo này sẽ được ghép lại thành một namespace duy nhất.
 
-Ví dụ: khi ta include 2 thư viện ở 2 file .h khác nhau để sử dụng, trong 2 thư viện đó sử dụng cùng 1 namespace thì khi include vào 1 file .c, namespace ở 2 file thư viện sẽ tự động được gộp lại và mở rộng trở thành 1 namespace chung duy nhất.
+Ví dụ: khi ta include 2 thư viện ở 2 file .hpp khác nhau để sử dụng, trong 2 thư viện đó sử dụng cùng 1 namespace thì khi include vào 1 file .cpp, namespace ở 2 file thư viện sẽ tự động được gộp lại và mở rộng trở thành 1 namespace chung duy nhất.
 
 File lcd1.hpp
 ```
