@@ -43,7 +43,7 @@ Chỉ sử dụng using namespace khi member muốn truy cập đến là duy nh
 Ví dụ:
 ```
 #include <iostream>
-
+#include <string.h>
 using namespace std;
 
 namespace A{
@@ -72,19 +72,20 @@ C++ cho phép tạo các namespace lồng nhau, nghĩa là một namespace có t
 Ví dụ:
 ```
 #include <iostream>
+#include <string.h>
 
 using namespace std;
 
 namespace A{
-    char *name = (char*)"Trung 20";
+    string name = "Trung 20";
 
     namespace C{
-        char *str = (char*)"Nguyen Hoang";
+        string str = "Nguyen Hoang";
     }
 }
 
 namespace B{
-    char *name = (char*)"Trung 21";
+    string name = "Trung 21";
 }
 
 using namespace A::C;
@@ -95,7 +96,7 @@ int main(int argc, char const *argv[])
     cout << "Name: " << B::name << endl;
     cout << "Name: " << A::C::str << endl;
 
-    str = (char*)"Hello World";
+    str = "Hello World";
     cout << "Name: " << str << endl;
     return 0;
 }
