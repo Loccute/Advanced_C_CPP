@@ -3,6 +3,17 @@
 Namespace là một phương thức giúp nhóm các định danh như tên biến, hàm, class, ... vào 1 không gian riêng tách biệt.
 
 Namespace được sử dụng để tránh xung đột tên khi có các định danh giống nhau được khai báo trong các phần của chương trình hoặc các thư viện khác nhau.
+
+Cú pháp chung:
+```
+namespace <tên của namespace>{
+    // khai báo và định nghĩa các thành phần
+    // biến
+    // hàm
+    // class. struct
+}
+```
+
 Ví dụ:
 ```
 #include <iostream>
@@ -27,7 +38,7 @@ namespace B{
 
 int main(int argc, char const *argv[])
 {
-    cout << "Name: " << A::name << endl;
+    cout << "Name: " << A::name << endl;    // dùng toán tử phạm vi "::" để truy cập vào các thành phần trong namespace.
     cout << "Name: " << B::name << endl;
 
     A::display();
