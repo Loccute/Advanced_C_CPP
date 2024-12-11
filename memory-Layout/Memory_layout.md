@@ -45,7 +45,7 @@ Một số đặc điểm:
 - Không Giữ Giá Trị Mặc Định: Bộ nhớ trên heap không giữ giá trị mặc định như trong Data Segment. Nếu không được khởi tạo, giá trị của biến trên heap sẽ không xác định.
 
 Ví dụ cấp phát động:
-```
+```c
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -111,7 +111,7 @@ Lưu ý rằng sử dụng Memory-mapped segment đôi khi yêu cầu quyền h�
 
 		Ví dụ tràn bộ nhớ stack khi gọi hàm đệ quy vô hạn:
 		
-		```
+		```c
 		int foo(int x){
 		    printf("De quy khong gioi han\n");
 		    return foo(x);
@@ -122,7 +122,7 @@ Lưu ý rằng sử dụng Memory-mapped segment đôi khi yêu cầu quyền h�
 	+ Heap: Nếu bạn liên tục cấp phát vùng nhớ mà không giải phóng thì sẽ bị lỗi tràn vùng nhớ Heap (Heap overflow). Nếu bạn khởi tạo một vùng nhớ quá lớn mà vùng nhớ Heap không thể lưu trữ một lần được sẽ bị lỗi khởi tạo vùng nhớ Heap thất bại.
 
 		Ví dụ trường hợp khởi tạo vùng nhớ Heap quá lớn:
-		```
+		```c
 		int *A = (int *)malloc(18446744073709551615);
 		```
 
